@@ -3,144 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profesyonel VKİ Hesaplayıcı</title>
+    <title>Modern VKİ Hesaplayıcı</title>
     <style>
         :root {
-            --primary-blue: #0093dd;
-            --bg-gray: #f0f2f5;
+            --primary: #0093dd;
+            --glass: rgba(255, 255, 255, 0.9); /* Biraz daha opak yaptım */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-gray);
+            /* Arka plan görseli */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            color: #333;
         }
 
+        /* Buzlu Cam Kart Tasarımı */
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 450px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h2 {
-            color: var(--primary-blue);
+            color: var(--primary);
             text-align: center;
+            font-size: 26px;
             margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .input-box {
-            margin-bottom: 20px;
-        }
+        .input-box { margin-bottom: 20px; }
+        .label-row { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 8px; }
 
-        .label-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        /* Kaydırma Çubuğu Tasarımı */
+        /* DÜZELTME: Kaydırma Çubuğu Rengi */
         input[type="range"] {
+            -webkit-appearance: none;
             width: 100%;
-            cursor: pointer;
+            height: 8px;
+            background: #aaa; /* Daha koyu renk, artık görünüyor! */
+            border-radius: 5px;
+            outline: none;
         }
 
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid white;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+
+        /* YENİ: Yaş ve Cinsiyet Alanları İçin Stil */
         .gender-age-row {
             display: flex;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-
-        select, input[type="number"] {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .gender-age-row label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        input[type="number"], select {
             width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.8);
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background-color: var(--primary-blue);
+            padding: 15px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 147, 221, 0.3);
         }
 
         button:hover {
-            background-color: #007bbd;
+            background: #007bbd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 147, 221, 0.4);
         }
 
-        /* Renkli Skala Bölümü */
+        /* Sonuç Paneli */
         .scale-container {
             margin-top: 30px;
-            display: none; /* İlk başta gizli, hesaplayınca açılır */
+            padding-top: 20px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+            display: none;
         }
 
         .scale-bar {
-            height: 15px;
+            height: 14px;
             width: 100%;
-            background: linear-gradient(to right, #3498db 0%, #2ecc71 25%, #f1c40f 50%, #e67e22 75%, #e74c3c 100%);
+            background: linear-gradient(to right, #3498db, #2ecc71, #f1c40f, #e67e22, #e74c3c);
             border-radius: 10px;
             position: relative;
-            margin: 20px 0;
+            margin: 25px 0;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .indicator {
-            width: 4px;
-            height: 25px;
+            width: 14px;
+            height: 14px;
             background: #333;
             position: absolute;
-            top: -5px;
-            transition: 0.5s ease-in-out;
-            border-radius: 2px;
-        }
-
-        .result-text {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
+            top: 0;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Vücut Kitle Endeksi</h2>
+    <h2>Sağlık Rehberi</h2>
 
     <div class="input-box">
-        <div class="label-row">
-            <span>Boyunuz:</span>
-            <span id="heightVal">175 cm</span>
-        </div>
-        <input type="range" id="height" min="100" max="220" value="175" oninput="updateValues()">
+        <div class="label-row"><span>Boy</span><span id="hText">175 cm</span></div>
+        <input type="range" id="height" min="100" max="220" value="175" oninput="update()">
     </div>
 
     <div class="input-box">
-        <div class="label-row">
-            <span>Kilonuz:</span>
-            <span id="weightVal">70 kg</span>
-        </div>
-        <input type="range" id="weight" min="30" max="150" value="70" oninput="updateValues()">
+        <div class="label-row"><span>Kilo</span><span id="wText">70 kg</span></div>
+        <input type="range" id="weight" min="30" max="150" value="70" oninput="update()">
     </div>
 
     <div class="gender-age-row">
         <div style="flex: 1;">
-            <label>Yaşınız:</label>
-            <input type="number" id="age" value="20">
+            <label>Yaş</label>
+            <input type="number" id="age" value="20" min="1" max="120">
         </div>
         <div style="flex: 1;">
-            <label>Cinsiyetiniz:</label>
+            <label>Cinsiyet</label>
             <select id="gender">
                 <option value="erkek">Erkek</option>
                 <option value="kadin">Kadın</option>
@@ -148,56 +176,50 @@
         </div>
     </div>
 
-    <button onclick="calculateBMI()">VKİ Hesapla</button>
+    <button onclick="calculate()">HESAPLA</button>
 
-    <div id="resultPanel" class="scale-container">
-        <p class="result-text">VKİ: <span id="bmiValue">--</span></p>
-        <div class="scale-bar">
-            <div id="indicator" class="indicator" style="left: 50%;"></div>
+    <div id="resPanel" class="scale-container">
+        <div style="text-align:center; font-size: 22px; margin-bottom: 10px;">
+            VKİ: <span id="bmiVal" style="color:var(--primary); font-weight:bold;">0</span>
         </div>
-        <p id="categoryText" style="text-align: center; color: var(--primary-blue); font-size: 1.2em;"></p>
+        <div class="scale-bar"><div id="ind" class="indicator"></div></div>
+        <div id="catText" style="text-align:center; font-weight:600; font-size: 20px;"></div>
     </div>
 </div>
 
 <script>
-    function updateValues() {
-        // Kaydırma çubuğu hareket ettikçe sayıları güncelle
-        document.getElementById('heightVal').innerText = document.getElementById('height').value + " cm";
-        document.getElementById('weightVal').innerText = document.getElementById('weight').value + " kg";
+    // Kaydırma çubukları hareket edince sayıları güncelle
+    function update() {
+        document.getElementById('hText').innerText = document.getElementById('height').value + " cm";
+        document.getElementById('wText').innerText = document.getElementById('weight').value + " kg";
     }
 
-    function calculateBMI() {
+    // Hesaplama fonksiyonu
+    function calculate() {
+        // Değerleri al (Yaş ve Cinsiyet de alınıyor ama VKİ formülünde kullanılmıyor)
         const h = document.getElementById('height').value;
         const w = document.getElementById('weight').value;
-        const bmi = (w / ((h / 100) * (h / 100))).toFixed(1);
+        const age = document.getElementById('age').value;
+        const gender = document.getElementById('gender').value;
 
-        document.getElementById('bmiValue').innerText = bmi;
-        document.getElementById('resultPanel').style.display = "block";
+        // VKİ Formülü: kg / m²
+        const bmi = (w / ((h/100)**2)).toFixed(1);
+        
+        // Sonucu ekrana yaz ve paneli göster
+        document.getElementById('bmiVal').innerText = bmi;
+        document.getElementById('resPanel').style.display = "block";
 
-        let category = "";
-        let pos = 0; // Renkli çubuktaki göstergenin yeri (%)
+        let cat = ""; let pos = 0;
+        // Kategoriyi ve çubuktaki pozisyonu belirle
+        if(bmi < 18.5) { cat = "Zayıf 🦴"; pos = (bmi/18.5)*20; }
+        else if(bmi < 25) { cat = "İdeal ✅"; pos = 20 + ((bmi-18.5)/6.5)*20; }
+        else if(bmi < 30) { cat = "Kilolu ⚖️"; pos = 40 + ((bmi-25)/5)*20; }
+        else { cat = "Obez ⚠️"; pos = 80; }
 
-        if(bmi < 18.5) {
-            category = "Zayıf";
-            pos = (bmi / 18.5) * 20; // 0-20% arası
-        } else if(bmi < 25) {
-            category = "Sağlıklı";
-            pos = 20 + ((bmi - 18.5) / 6.5) * 20; // 20-40% arası
-        } else if(bmi < 30) {
-            category = "Fazla Kilolu";
-            pos = 40 + ((bmi - 25) / 5) * 20; // 40-60% arası
-        } else if(bmi < 35) {
-            category = "Şişman (Obez)";
-            pos = 60 + ((bmi - 30) / 5) * 20; // 60-80% arası
-        } else {
-            category = "Aşırı Obez";
-            pos = 90; // 80-100% arası
-        }
-
-        document.getElementById('categoryText').innerText = category;
-        document.getElementById('indicator').style.left = pos + "%";
+        document.getElementById('catText').innerText = cat;
+        // Göstergeyi (indicator) doğru yere kaydır
+        document.getElementById('ind').style.left = `calc(${pos}% - 7px)`;
     }
 </script>
-
 </body>
 </html>
