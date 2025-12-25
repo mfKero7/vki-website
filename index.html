@@ -7,11 +7,11 @@
     <style>
         :root {
             --primary: #0093dd;
-            --glass: rgba(255, 255, 255, 0.9); /* Biraz daha opak yaptım */
+            --glass: rgba(255, 255, 255, 0.9); 
         }
 
         body {
-            /* Arka plan görseli */
+            
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                         url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1920');
             background-size: cover;
@@ -25,7 +25,6 @@
             color: #333;
         }
 
-        /* Buzlu Cam Kart Tasarımı */
         .container {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -53,12 +52,11 @@
         .input-box { margin-bottom: 20px; }
         .label-row { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 8px; }
 
-        /* DÜZELTME: Kaydırma Çubuğu Rengi */
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
             height: 8px;
-            background: #aaa; /* Daha koyu renk, artık görünüyor! */
+            background: #aaa; 
             border-radius: 5px;
             outline: none;
         }
@@ -76,7 +74,6 @@
 
         input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
-        /* YENİ: Yaş ve Cinsiyet Alanları İçin Stil */
         .gender-age-row {
             display: flex;
             gap: 15px;
@@ -116,7 +113,6 @@
             box-shadow: 0 6px 20px rgba(0, 147, 221, 0.4);
         }
 
-        /* Sonuç Paneli */
         .scale-container {
             margin-top: 30px;
             padding-top: 20px;
@@ -188,36 +184,29 @@
 </div>
 
 <script>
-    // Kaydırma çubukları hareket edince sayıları güncelle
     function update() {
         document.getElementById('hText').innerText = document.getElementById('height').value + " cm";
         document.getElementById('wText').innerText = document.getElementById('weight').value + " kg";
     }
 
-    // Hesaplama fonksiyonu
     function calculate() {
-        // Değerleri al (Yaş ve Cinsiyet de alınıyor ama VKİ formülünde kullanılmıyor)
         const h = document.getElementById('height').value;
         const w = document.getElementById('weight').value;
         const age = document.getElementById('age').value;
         const gender = document.getElementById('gender').value;
 
-        // VKİ Formülü: kg / m²
         const bmi = (w / ((h/100)**2)).toFixed(1);
         
-        // Sonucu ekrana yaz ve paneli göster
         document.getElementById('bmiVal').innerText = bmi;
         document.getElementById('resPanel').style.display = "block";
 
         let cat = ""; let pos = 0;
-        // Kategoriyi ve çubuktaki pozisyonu belirle
         if(bmi < 18.5) { cat = "Zayıf 🦴"; pos = (bmi/18.5)*20; }
         else if(bmi < 25) { cat = "İdeal ✅"; pos = 20 + ((bmi-18.5)/6.5)*20; }
         else if(bmi < 30) { cat = "Kilolu ⚖️"; pos = 40 + ((bmi-25)/5)*20; }
         else { cat = "Obez ⚠️"; pos = 80; }
 
         document.getElementById('catText').innerText = cat;
-        // Göstergeyi (indicator) doğru yere kaydır
         document.getElementById('ind').style.left = `calc(${pos}% - 7px)`;
     }
 </script>
